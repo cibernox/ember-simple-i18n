@@ -1,0 +1,30 @@
+{
+  "name": "simple-ember-i18n",
+  "version": "0.0.0",
+  "authors": [
+    "Miguel Camba <miguel.camba@gmail.com>"
+  ],
+  "description": "Simple yet fully functional i18n library for ember.js apps",
+  "keywords": [
+    "simple",
+    "ember",
+    "ember.js",
+    "i18n",
+    "internalization",
+    "translate"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ember": "~1.4.0",
+    "qunit": "~1.13.0",
+    "handlebars": "~1.3.0"
+  }
+}

@@ -1,0 +1,10 @@
+tmp/
+tests
+
+.DS_Store
+.project
+
+.github-upload-token
+
+node_modules/
+bower_components/
