@@ -1,8 +1,7 @@
 import Ember from "ember";
+import I18n from "./i18n-js"
 import translate from "./translate";
 import localize from "./localize";
-
-var defaultOptions = {translate: "translate", localize: "localize"};
 
 function registerHelpers(options){
   options = options || {};
@@ -14,6 +13,7 @@ function registerHelpers(options){
 }
 
 export {
+  I18n,
   registerHelpers,
   translate,
   localize

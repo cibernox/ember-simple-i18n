@@ -1,6 +1,6 @@
 define(
-  ["exports"],
-  function(__exports__) {
+  ["./i18n-js","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
     /**
      * Helper for translate entries.
@@ -66,6 +66,8 @@ define(
      *
      * @return {string} The translated value
      */
+
+    var I18n = __dependency1__["default"] || __dependency1__;
 
     __exports__["default"] = function() {
       var length = arguments.length,

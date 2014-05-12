@@ -63,6 +63,8 @@
  * @return {string} The translated value
  */
 
+import I18n from "./i18n-js";
+
 export default function() {
   var length = arguments.length,
     options  = arguments[length - 1],

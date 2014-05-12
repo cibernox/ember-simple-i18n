@@ -64,6 +64,8 @@
  * @return {string} The translated value
  */
 
+var I18n = require("./i18n-js")["default"] || require("./i18n-js");
+
 exports["default"] = function() {
   var length = arguments.length,
     options  = arguments[length - 1],

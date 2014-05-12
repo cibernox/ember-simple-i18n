@@ -1,9 +1,7 @@
 "use strict";
 var Ember = require("ember")["default"] || require("ember");
-var translate = require("./translate")["default"] || require("./translate");
+var I18n = require("./i18n-js")["default"] || require("./i18n-js");var translate = require("./translate")["default"] || require("./translate");
 var localize = require("./localize")["default"] || require("./localize");
-
-var defaultOptions = {translate: "translate", localize: "localize"};
 
 function registerHelpers(options){
   options = options || {};
@@ -14,6 +12,7 @@ function registerHelpers(options){
   Ember.Handlebars.registerBoundHelper(options.localize, localize);
 }
 
+exports.I18n = I18n;
 exports.registerHelpers = registerHelpers;
 exports.translate = translate;
 exports.localize = localize;
