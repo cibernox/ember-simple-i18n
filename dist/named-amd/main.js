@@ -1,4 +1,4 @@
-define("simple-ember-i18n/localize",
+define("ember-simple-i18n/localize",
   ["exports"],
   function(__exports__) {
     "use strict";
@@ -7,7 +7,7 @@ define("simple-ember-i18n/localize",
       return I18n.l(format, value);
     }
   });
-define("simple-ember-i18n",
+define("ember-simple-i18n",
   ["ember","./translate","./localize","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
     "use strict";
@@ -30,7 +30,7 @@ define("simple-ember-i18n",
     __exports__.translate = translate;
     __exports__.localize = localize;
   });
-define("simple-ember-i18n/translate",
+define("ember-simple-i18n/translate",
   ["exports"],
   function(__exports__) {
     "use strict";
