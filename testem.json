@@ -1,6 +1,13 @@
 {
   "framework": "qunit",
-  "cwd": "tmp/output",
   "launch_in_ci": ["PhantomJS"],
-  "launch_in_dev": ["PhantomJS", "Chrome"]
+  "launch_in_dev": ["PhantomJS"],
+  "src_files": [
+    "bower_components/jquery/jquery.js",
+    "bower_components/handlebars/handlebars.js",
+    "bower_components/ember/ember.js",
+    "vendor/i18n-js/i18n.js",
+    "packages/es6/t.js",
+    "tests/*.js"
+  ]
 }
