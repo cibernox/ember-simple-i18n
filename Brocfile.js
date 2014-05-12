@@ -1,8 +1,6 @@
-var mergeTrees  = require('broccoli-merge-trees');
-var pickFiles   = require('broccoli-static-compiler');
 var makeModules = require('broccoli-dist-es6-module');
 
-var simpleEmberI18n = makeModules('packages/es6', {
+var emberSimpleI18n = makeModules('packages/es6', {
   global: 'Ember.SimpleI18n',
   packageName: 'simple-ember-i18n',
   main: 'main',
@@ -11,4 +9,4 @@ var simpleEmberI18n = makeModules('packages/es6', {
   }
 })
 
-module.exports = simpleEmberI18n;
+module.exports = emberSimpleI18n;
