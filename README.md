@@ -1,45 +1,50 @@
-# Still a WIP.
+# Ember Simple I18n
 
-Look at https://github.com/jamesarosen/ember-i18n for something you can use today.
+**Warning: This is still a work in progress!**
+
+If you need something that can be used today, check out [ember-i18n](https://github.com/jamesarosen/ember-i18n) by James Alexander Rosen.
+
+This library is intended to be minimal. It only provides a helper method for translating
+strings.
+
+It uses the [I18n-js](https://github.com/fnando/i18n-js) library, which uses the
+same syntax and conventions that Rails does, but unlike i18n-js, this project is not
+intended to be used as a gem.
 
 ## Usage
 
-This library is intended to be minimal. It only provides a helper method for translate
-strings.
+Pass the key of the translation.
 
-It is backed underneath by [I18n-js](https://github.com/fnando/i18n-js), which uses the
-same syntax and conventions that rails' does, but unlike it, is not intended to be used
-as a gem.
-
-It provides helpers to internacionalize keys:
-
-Just pass the key of the translation. If it is quoted, it will be looked as
-in the translations object.
+If it is quoted, it will look that property up in the translations object
+and insert the current value of the property.
 
 ```handlebars
 {{t "title"}} <!--- "My title" --->
 ```
 
-If a key is unquoted, it will be understood as a bound property, so it is
-evaluated in the current context and will be updated if it changes.
+If a key is unquoted, it will be understood as a bound property, and
+evaluated in the current context, updating the value if it changes.
 
 ```handlebars
-{{t titleKey}} <!--- "Translation of the value hold in 'titleKey'" --->
+{{t titleKey}} <!--- "Translation of the value held in 'titleKey'" --->
 ```
 
-Interpolations are passed in the options object.
+Interpolations are passed using the options object.
 
 ```handlebars
 {{t "salute" name="John"}} <!--- "Hi John" --->
 ```
 
-Namespaced translations can be expresed in 3 different ways:
+### Namespaced Translations
 
-A) points
+There are three ways in which namespaced translations can be expressed:
+
+A) dot notation
 
 ```handlebars
 {{t "posts.title"}} <!--- "All your posts" --->
 ```
+
 B) passing a list of values
 
 ```handlebars
@@ -52,18 +57,20 @@ C) passing a key and a scope
 {{t "posts" scope="title"}} <!--- "All your posts" --->
 ```
 
-In all cases, unquoted values passed on the list are bound to the current
+In all cases, unquoted values passed to the list are bound to the current
 context.
-Unquoted values of the trailing options, like the scope or the interpolations
-are feched from the context, but they are not bound.
 
-If you want to bound the values in the options, append the suffix 'Binding'
-to the property name.
+Values passed using the options object, such as the scope or the
+interpolations, are not bound, even if they are unquoted. They
+are fetched from the current context.
+
+If you want to bind the values in the options, append the suffix
+`'Binding'` to the property name:
 
 ```handlebars
-{{t "salute" scope=saluteScopeKey nameBinding=user}} <!--- "Hi John!" --->
+{{t "salute" scope=informal nameBinding=user}} <!--- "Hi John!" --->
 ```
 
-In this last example, `"salute"` is just a string, `saluteScopeKey` is looked
-in the current context but is not bound, and `nameBinding` is bound to the
-current context.
+In this last example, `"salute"` is just a string, `informal` is looked
+up in the current context but is not bound, and `nameBinding` is bound
+to the current context.
