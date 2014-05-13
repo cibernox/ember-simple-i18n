@@ -12,8 +12,15 @@ function registerHelpers(options){
   Ember.Handlebars.registerBoundHelper(options.localize, localize);
 }
 
+function SimpleI18n(){
+  this.I18n = I18n;
+  this.loadTranslations = function(localeName, url){
+    debugger;
+  }
+}
+
 export {
-  I18n,
+  SimpleI18n,
   registerHelpers,
   translate,
   localize
