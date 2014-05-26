@@ -1,5 +1,96 @@
 !function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),(f.Ember||(f.Ember={})).SimpleI18n=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 "use strict";
+var Handlebars = window.Ember.Handlebars;
+var $ = window.Ember.$;
+var RSVP = window.Ember.RSVP;
+var I18n = _dereq_("./i18n-js")["default"] || _dereq_("./i18n-js");var translate = _dereq_("./translate")["default"] || _dereq_("./translate");
+var localize = _dereq_("./localize")["default"] || _dereq_("./localize");
+
+/**
+ * Registers in handlebars helpers for translate and localize.
+ * @param  {object} options Options for customize the names of the helpers.
+ *                          Defaults to { translate: "translate", localize: localize }
+ *
+ * Example usage:
+ *
+ * registerHelpers({translate: 'i18n-t', localize: 'i18n-l'});
+ *
+ */
+function registerHelpers(options){
+  options = options || {};
+  options.translate = "translate";
+  options.localize  = "localize";
+
+  Handlebars.registerBoundHelper(options.translate, translate);
+  Handlebars.registerBoundHelper(options.localize, localize);
+}
+
+/**
+ * Private
+ * Fetches the translations from the given url and loads it into I18n.
+ * If a callback is provided, it is executed afterwards.
+ * @param  {String}   localeName The name of the locale.
+ * @param  {String}   urlOrJSON  The url from where to fetch the translations json.
+ */
+function loadTranslations(localeName, urlOrJSON){
+  if (typeof urlOrJSON === 'object'){
+    I18n.translations[localeName] = urlOrJSON;
+    return RSVP.Promise.resolve(urlOrJSON);
+  } else {
+    return new RSVP.Promise(function(resolve, reject){
+      $.ajax({url: urlOrJSON, dataType: 'json'}).success(function (json) {
+        I18n.translations[localeName] = json;
+        resolve(json);
+      }).fail(function(jqXHR, textStatus, errorThrown){
+        reject(textStatus);
+      });
+    });
+  }
+};
+
+function setDefaultLocale(localeName, url, callback){
+  I18n.defaultLocale = localeName;
+  return loadTranslations.apply(null, arguments);
+};
+
+function setLocale(localeName, url, callback){
+  I18n.locale = localeName;
+  return loadTranslations.apply(null, arguments);
+};
+
+function setFallbacks(value){
+  I18n.fallbacks = value;
+}
+
+function getDefaultLocale(){
+  return I18n.defaultLocale;
+};
+
+function getLocale(){
+  return I18n.locale;
+};
+
+function getFallbacks(){
+  return I18n.fallbacks;
+}
+
+function getTranslations(){
+  return I18n.translations;
+}
+
+
+exports.setDefaultLocale = setDefaultLocale;
+exports.setLocale = setLocale;
+exports.setFallbacks = setFallbacks;
+exports.getDefaultLocale = getDefaultLocale;
+exports.getLocale = getLocale;
+exports.getFallbacks = getFallbacks;
+exports.getTranslations = getTranslations;
+exports.registerHelpers = registerHelpers;
+exports.translate = translate;
+exports.localize = localize;
+},{"./i18n-js":2,"./localize":3,"./translate":4}],2:[function(_dereq_,module,exports){
+"use strict";
 var I18n = {};
 
 
@@ -733,94 +824,14 @@ I18n.l = I18n.localize;
 I18n.p = I18n.pluralize;
 
 exports["default"] = I18n;
-},{}],2:[function(_dereq_,module,exports){
+},{}],3:[function(_dereq_,module,exports){
 "use strict";
 var I18n = _dereq_("./i18n-js")["default"] || _dereq_("./i18n-js");
 
 exports["default"] = function(format, value) {
   return I18n.l(format, value);
 }
-},{"./i18n-js":1}],3:[function(_dereq_,module,exports){
-"use strict";
-var Ember = window.Ember["default"] || window.Ember;
-var I18n = _dereq_("./i18n-js")["default"] || _dereq_("./i18n-js");var translate = _dereq_("./translate")["default"] || _dereq_("./translate");
-var localize = _dereq_("./localize")["default"] || _dereq_("./localize");
-
-/**
- * Registers in handlebars helpers for translate and localize.
- * @param  {object} options Options for customize the names of the helpers.
- *                          Defaults to { translate: "translate", localize: localize }
- *
- * Example usage:
- *
- * registerHelpers({translate: 'i18n-t', localize: 'i18n-l'});
- *
- */
-function registerHelpers(options){
-  options = options || {};
-  options.translate = "translate";
-  options.localize  = "localize";
-
-  Ember.Handlebars.registerBoundHelper(options.translate, translate);
-  Ember.Handlebars.registerBoundHelper(options.localize, localize);
-}
-
-/**
- * Private
- * Fetches the translations from the given url and loads it into I18n.
- * If a callback is provided, it is executed afterwards.
- * @param  {String}   localeName The name of the locale.
- * @param  {String}   url        The url from where to fetch the translations json.
- * @param  {Function} callback   (Optional) A callback function to execute on success.
- */
-function loadTranslations(localeName, url, callback){
-  var json;
-
-  if (arguments.length == 2){
-    json = arguments[1];
-    I18n.translations[localeName] = json;
-
-  } else {
-    var httpRequest = new XMLHttpRequest();
-
-    httpRequest.onload = function (data) {
-      json = JSON.parse(data.currentTarget.responseText);
-      I18n.translations[localeName] = json;
-      callback && callback(json);
-    }
-    httpRequest.open('GET', url)
-    httpRequest.send();
-  }
-}
-
-
-function SimpleI18n(){
-  this.I18n = I18n;
-
-  this.setDefaultLocale = function(localeName, url, callback){
-    this.I18n.defaultLocale = localeName;
-    loadTranslations.apply(null, arguments);
-  };
-
-  this.setLocale = function(localeName, url, callback){
-    this.I18n.locale = localeName;
-    loadTranslations.apply(null, arguments);
-  };
-
-  this.setFallbacks = function(value){
-    this.I18n.fallbacks = value;
-  }
-
-  return this;
-}
-
-var simpleI18n = new SimpleI18n();
-
-exports.simpleI18n = simpleI18n;
-exports.registerHelpers = registerHelpers;
-exports.translate = translate;
-exports.localize = localize;
-},{"./i18n-js":1,"./localize":2,"./translate":4}],4:[function(_dereq_,module,exports){
+},{"./i18n-js":2}],4:[function(_dereq_,module,exports){
 "use strict";
 /**
  * Helper for translate entries.
@@ -917,6 +928,6 @@ exports["default"] = function() {
 
   return I18n.t(keys.join('.'), opts);
 }
-},{"./i18n-js":1}]},{},[3])
-(3)
+},{"./i18n-js":2}]},{},[1])
+(1)
 });

@@ -22,6 +22,7 @@
   "devDependencies": {
     "testem": "~0.6.15",
     "broccoli": "~0.12.0",
-    "broccoli-dist-es6-module": "~0.2.0"
+    "broccoli-dist-es6-module": "~0.2.0",
+    "jquery-mockjax": "~1.5.3"
   }
 }

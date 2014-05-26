@@ -6,6 +6,7 @@
     "bower_components/jquery/jquery.js",
     "bower_components/handlebars/handlebars.js",
     "bower_components/ember/ember.js",
+    "node_modules/jquery-mockjax/jquery.mockjax.js",
     "vendor/i18n-js/i18n.js",
     "dist/globals/main.js",
     "tests/*.js"
