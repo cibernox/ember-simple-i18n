@@ -1,12 +1,9 @@
 define(
-  ["ember","./i18n-js","./translate-helper","./localize-helper","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __exports__) {
+  ["./i18n-js","./translate-helper","./localize-helper","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
     "use strict";
-    var Handlebars = __dependency1__.Handlebars;
-    var $ = __dependency1__.$;
-    var RSVP = __dependency1__.RSVP;
-    var I18n = __dependency2__["default"] || __dependency2__;var translateHelper = __dependency3__["default"] || __dependency3__;
-    var localizeHelper = __dependency4__["default"] || __dependency4__;
+    var I18n = __dependency1__["default"] || __dependency1__;var translateHelper = __dependency2__["default"] || __dependency2__;
+    var localizeHelper = __dependency3__["default"] || __dependency3__;
 
     /**
      * Wraps I18n translate method.
@@ -47,8 +44,8 @@ define(
       options.translate = "translate";
       options.localize  = "localize";
 
-      Handlebars.registerBoundHelper(options.translate, translateHelper);
-      Handlebars.registerBoundHelper(options.localize, localizeHelper);
+      Ember.Handlebars.registerBoundHelper(options.translate, translateHelper);
+      Ember.Handlebars.registerBoundHelper(options.localize, localizeHelper);
     }
 
     /**
@@ -59,12 +56,12 @@ define(
      * @param  {String}   urlOrJSON  The url from where to fetch the translations json.
      */
     function loadTranslations(localeName, urlOrJSON){
-      return new RSVP.Promise(function(resolve, reject){
+      return new Ember.RSVP.Promise(function(resolve, reject){
         if (typeof urlOrJSON === 'object'){
           I18n.translations[localeName] = urlOrJSON;
           resolve(urlOrJSON);
         } else {
-          $.ajax({url: urlOrJSON, dataType: 'json'}).success(function (json) {
+          Ember.$.ajax({url: urlOrJSON, dataType: 'json'}).success(function (json) {
             I18n.translations[localeName] = json;
             resolve(json);
           }).fail(reject);

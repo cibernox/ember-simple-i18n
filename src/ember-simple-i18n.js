@@ -1,4 +1,3 @@
-import {Handlebars, $, RSVP} from "ember";
 import I18n from "./i18n-js"
 import translateHelper from "./translate-helper";
 import localizeHelper from "./localize-helper";
@@ -42,8 +41,8 @@ function registerHelpers(options){
   options.translate = "translate";
   options.localize  = "localize";
 
-  Handlebars.registerBoundHelper(options.translate, translateHelper);
-  Handlebars.registerBoundHelper(options.localize, localizeHelper);
+  Ember.Handlebars.registerBoundHelper(options.translate, translateHelper);
+  Ember.Handlebars.registerBoundHelper(options.localize, localizeHelper);
 }
 
 /**
@@ -54,12 +53,12 @@ function registerHelpers(options){
  * @param  {String}   urlOrJSON  The url from where to fetch the translations json.
  */
 function loadTranslations(localeName, urlOrJSON){
-  return new RSVP.Promise(function(resolve, reject){
+  return new Ember.RSVP.Promise(function(resolve, reject){
     if (typeof urlOrJSON === 'object'){
       I18n.translations[localeName] = urlOrJSON;
       resolve(urlOrJSON);
     } else {
-      $.ajax({url: urlOrJSON, dataType: 'json'}).success(function (json) {
+      Ember.$.ajax({url: urlOrJSON, dataType: 'json'}).success(function (json) {
         I18n.translations[localeName] = json;
         resolve(json);
       }).fail(reject);

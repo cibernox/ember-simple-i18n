@@ -1,8 +1,5 @@
 !function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),(f.Ember||(f.Ember={})).SimpleI18n=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 "use strict";
-var Handlebars = window.Ember.Handlebars;
-var $ = window.Ember.$;
-var RSVP = window.Ember.RSVP;
 var I18n = _dereq_("./i18n-js")["default"] || _dereq_("./i18n-js");var translateHelper = _dereq_("./translate-helper")["default"] || _dereq_("./translate-helper");
 var localizeHelper = _dereq_("./localize-helper")["default"] || _dereq_("./localize-helper");
 
@@ -45,8 +42,8 @@ function registerHelpers(options){
   options.translate = "translate";
   options.localize  = "localize";
 
-  Handlebars.registerBoundHelper(options.translate, translateHelper);
-  Handlebars.registerBoundHelper(options.localize, localizeHelper);
+  Ember.Handlebars.registerBoundHelper(options.translate, translateHelper);
+  Ember.Handlebars.registerBoundHelper(options.localize, localizeHelper);
 }
 
 /**
@@ -57,12 +54,12 @@ function registerHelpers(options){
  * @param  {String}   urlOrJSON  The url from where to fetch the translations json.
  */
 function loadTranslations(localeName, urlOrJSON){
-  return new RSVP.Promise(function(resolve, reject){
+  return new Ember.RSVP.Promise(function(resolve, reject){
     if (typeof urlOrJSON === 'object'){
       I18n.translations[localeName] = urlOrJSON;
       resolve(urlOrJSON);
     } else {
-      $.ajax({url: urlOrJSON, dataType: 'json'}).success(function (json) {
+      Ember.$.ajax({url: urlOrJSON, dataType: 'json'}).success(function (json) {
         I18n.translations[localeName] = json;
         resolve(json);
       }).fail(reject);

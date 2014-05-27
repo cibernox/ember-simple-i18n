@@ -1,7 +1,4 @@
 "use strict";
-var Handlebars = require("ember").Handlebars;
-var $ = require("ember").$;
-var RSVP = require("ember").RSVP;
 var I18n = require("./i18n-js")["default"] || require("./i18n-js");var translateHelper = require("./translate-helper")["default"] || require("./translate-helper");
 var localizeHelper = require("./localize-helper")["default"] || require("./localize-helper");
 
@@ -44,8 +41,8 @@ function registerHelpers(options){
   options.translate = "translate";
   options.localize  = "localize";
 
-  Handlebars.registerBoundHelper(options.translate, translateHelper);
-  Handlebars.registerBoundHelper(options.localize, localizeHelper);
+  Ember.Handlebars.registerBoundHelper(options.translate, translateHelper);
+  Ember.Handlebars.registerBoundHelper(options.localize, localizeHelper);
 }
 
 /**
@@ -56,12 +53,12 @@ function registerHelpers(options){
  * @param  {String}   urlOrJSON  The url from where to fetch the translations json.
  */
 function loadTranslations(localeName, urlOrJSON){
-  return new RSVP.Promise(function(resolve, reject){
+  return new Ember.RSVP.Promise(function(resolve, reject){
     if (typeof urlOrJSON === 'object'){
       I18n.translations[localeName] = urlOrJSON;
       resolve(urlOrJSON);
     } else {
-      $.ajax({url: urlOrJSON, dataType: 'json'}).success(function (json) {
+      Ember.$.ajax({url: urlOrJSON, dataType: 'json'}).success(function (json) {
         I18n.translations[localeName] = json;
         resolve(json);
       }).fail(reject);
