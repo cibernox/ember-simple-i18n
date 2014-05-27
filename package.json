@@ -1,6 +1,6 @@
 {
   "name": "ember-simple-i18n",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Simple yet fully functional i18n library for ember.js apps",
   "main": "index.js",
   "directories": {
