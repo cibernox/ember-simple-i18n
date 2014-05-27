@@ -57,19 +57,17 @@ function registerHelpers(options){
  * @param  {String}   urlOrJSON  The url from where to fetch the translations json.
  */
 function loadTranslations(localeName, urlOrJSON){
-  if (typeof urlOrJSON === 'object'){
-    I18n.translations[localeName] = urlOrJSON;
-    return RSVP.Promise.resolve(urlOrJSON);
-  } else {
-    return new RSVP.Promise(function(resolve, reject){
+  return new RSVP.Promise(function(resolve, reject){
+    if (typeof urlOrJSON === 'object'){
+      I18n.translations[localeName] = urlOrJSON;
+      resolve(urlOrJSON);
+    } else {
       $.ajax({url: urlOrJSON, dataType: 'json'}).success(function (json) {
         I18n.translations[localeName] = json;
         resolve(json);
-      }).fail(function(jqXHR, textStatus, errorThrown){
-        reject(textStatus);
-      });
-    });
-  }
+      }).fail(reject);
+    }
+  });
 };
 
 function setDefaultLocale(localeName, url, callback){
