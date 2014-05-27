@@ -1,12 +1,36 @@
 define(
-  ["ember","./i18n-js","./translate","./localize","exports"],
+  ["ember","./i18n-js","./translate-helper","./localize-helper","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __exports__) {
     "use strict";
     var Handlebars = __dependency1__.Handlebars;
     var $ = __dependency1__.$;
     var RSVP = __dependency1__.RSVP;
-    var I18n = __dependency2__["default"] || __dependency2__;var translate = __dependency3__["default"] || __dependency3__;
-    var localize = __dependency4__["default"] || __dependency4__;
+    var I18n = __dependency2__["default"] || __dependency2__;var translateHelper = __dependency3__["default"] || __dependency3__;
+    var localizeHelper = __dependency4__["default"] || __dependency4__;
+
+    /**
+     * Wraps I18n translate method.
+     * @param  {String} scope   The scope to translate. Forwarded to I18n-js.
+     * @param  {Object} options The options of the translations. Forwarded to I18n-js.
+     * @return {String}         The translated string.
+     */
+    function translate(scope, options){
+      return I18n.t(scope, options)
+    }
+
+    /**
+     * Wraps I18n localize method.
+     * @param  {String} scope The scope of the localization. Forwarded to I18n-js.
+     * @param  {Mixed} value  The value to localize.
+     * @return {String}       The localized value.
+     */
+    function localize(scope, value){
+      return I18n.l(scope, value)
+    }
+
+    /* Aliases */
+    var t = translate;
+    var l = localize;
 
     /**
      * Registers in handlebars helpers for translate and localize.
@@ -23,8 +47,8 @@ define(
       options.translate = "translate";
       options.localize  = "localize";
 
-      Handlebars.registerBoundHelper(options.translate, translate);
-      Handlebars.registerBoundHelper(options.localize, localize);
+      Handlebars.registerBoundHelper(options.translate, translateHelper);
+      Handlebars.registerBoundHelper(options.localize, localizeHelper);
     }
 
     /**
@@ -80,7 +104,6 @@ define(
       return I18n.translations;
     }
 
-
     __exports__.setDefaultLocale = setDefaultLocale;
     __exports__.setLocale = setLocale;
     __exports__.setFallbacks = setFallbacks;
@@ -89,6 +112,10 @@ define(
     __exports__.getFallbacks = getFallbacks;
     __exports__.getTranslations = getTranslations;
     __exports__.registerHelpers = registerHelpers;
+    __exports__.translateHelper = translateHelper;
+    __exports__.localizeHelper = localizeHelper;
     __exports__.translate = translate;
+    __exports__.t = t;
     __exports__.localize = localize;
+    __exports__.l = l;
   });

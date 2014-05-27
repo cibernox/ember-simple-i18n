@@ -2,8 +2,32 @@
 var Handlebars = require("ember").Handlebars;
 var $ = require("ember").$;
 var RSVP = require("ember").RSVP;
-var I18n = require("./i18n-js")["default"] || require("./i18n-js");var translate = require("./translate")["default"] || require("./translate");
-var localize = require("./localize")["default"] || require("./localize");
+var I18n = require("./i18n-js")["default"] || require("./i18n-js");var translateHelper = require("./translate-helper")["default"] || require("./translate-helper");
+var localizeHelper = require("./localize-helper")["default"] || require("./localize-helper");
+
+/**
+ * Wraps I18n translate method.
+ * @param  {String} scope   The scope to translate. Forwarded to I18n-js.
+ * @param  {Object} options The options of the translations. Forwarded to I18n-js.
+ * @return {String}         The translated string.
+ */
+function translate(scope, options){
+  return I18n.t(scope, options)
+}
+
+/**
+ * Wraps I18n localize method.
+ * @param  {String} scope The scope of the localization. Forwarded to I18n-js.
+ * @param  {Mixed} value  The value to localize.
+ * @return {String}       The localized value.
+ */
+function localize(scope, value){
+  return I18n.l(scope, value)
+}
+
+/* Aliases */
+var t = translate;
+var l = localize;
 
 /**
  * Registers in handlebars helpers for translate and localize.
@@ -20,8 +44,8 @@ function registerHelpers(options){
   options.translate = "translate";
   options.localize  = "localize";
 
-  Handlebars.registerBoundHelper(options.translate, translate);
-  Handlebars.registerBoundHelper(options.localize, localize);
+  Handlebars.registerBoundHelper(options.translate, translateHelper);
+  Handlebars.registerBoundHelper(options.localize, localizeHelper);
 }
 
 /**
@@ -77,7 +101,6 @@ function getTranslations(){
   return I18n.translations;
 }
 
-
 exports.setDefaultLocale = setDefaultLocale;
 exports.setLocale = setLocale;
 exports.setFallbacks = setFallbacks;
@@ -86,5 +109,9 @@ exports.getLocale = getLocale;
 exports.getFallbacks = getFallbacks;
 exports.getTranslations = getTranslations;
 exports.registerHelpers = registerHelpers;
+exports.translateHelper = translateHelper;
+exports.localizeHelper = localizeHelper;
 exports.translate = translate;
+exports.t = t;
 exports.localize = localize;
+exports.l = l;

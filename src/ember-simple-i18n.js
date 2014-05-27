@@ -1,7 +1,31 @@
 import {Handlebars, $, RSVP} from "ember";
 import I18n from "./i18n-js"
-import translate from "./translate";
-import localize from "./localize";
+import translateHelper from "./translate-helper";
+import localizeHelper from "./localize-helper";
+
+/**
+ * Wraps I18n translate method.
+ * @param  {String} scope   The scope to translate. Forwarded to I18n-js.
+ * @param  {Object} options The options of the translations. Forwarded to I18n-js.
+ * @return {String}         The translated string.
+ */
+function translate(scope, options){
+  return I18n.t(scope, options)
+}
+
+/**
+ * Wraps I18n localize method.
+ * @param  {String} scope The scope of the localization. Forwarded to I18n-js.
+ * @param  {Mixed} value  The value to localize.
+ * @return {String}       The localized value.
+ */
+function localize(scope, value){
+  return I18n.l(scope, value)
+}
+
+/* Aliases */
+var t = translate;
+var l = localize;
 
 /**
  * Registers in handlebars helpers for translate and localize.
@@ -18,8 +42,8 @@ function registerHelpers(options){
   options.translate = "translate";
   options.localize  = "localize";
 
-  Handlebars.registerBoundHelper(options.translate, translate);
-  Handlebars.registerBoundHelper(options.localize, localize);
+  Handlebars.registerBoundHelper(options.translate, translateHelper);
+  Handlebars.registerBoundHelper(options.localize, localizeHelper);
 }
 
 /**
@@ -75,7 +99,6 @@ function getTranslations(){
   return I18n.translations;
 }
 
-
 export {
   setDefaultLocale,
   setLocale,
@@ -85,6 +108,10 @@ export {
   getFallbacks,
   getTranslations,
   registerHelpers,
+  translateHelper,
+  localizeHelper,
   translate,
-  localize
+  t,
+  localize,
+  l
 }

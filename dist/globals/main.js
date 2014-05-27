@@ -3,8 +3,32 @@
 var Handlebars = window.Ember.Handlebars;
 var $ = window.Ember.$;
 var RSVP = window.Ember.RSVP;
-var I18n = _dereq_("./i18n-js")["default"] || _dereq_("./i18n-js");var translate = _dereq_("./translate")["default"] || _dereq_("./translate");
-var localize = _dereq_("./localize")["default"] || _dereq_("./localize");
+var I18n = _dereq_("./i18n-js")["default"] || _dereq_("./i18n-js");var translateHelper = _dereq_("./translate-helper")["default"] || _dereq_("./translate-helper");
+var localizeHelper = _dereq_("./localize-helper")["default"] || _dereq_("./localize-helper");
+
+/**
+ * Wraps I18n translate method.
+ * @param  {String} scope   The scope to translate. Forwarded to I18n-js.
+ * @param  {Object} options The options of the translations. Forwarded to I18n-js.
+ * @return {String}         The translated string.
+ */
+function translate(scope, options){
+  return I18n.t(scope, options)
+}
+
+/**
+ * Wraps I18n localize method.
+ * @param  {String} scope The scope of the localization. Forwarded to I18n-js.
+ * @param  {Mixed} value  The value to localize.
+ * @return {String}       The localized value.
+ */
+function localize(scope, value){
+  return I18n.l(scope, value)
+}
+
+/* Aliases */
+var t = translate;
+var l = localize;
 
 /**
  * Registers in handlebars helpers for translate and localize.
@@ -21,8 +45,8 @@ function registerHelpers(options){
   options.translate = "translate";
   options.localize  = "localize";
 
-  Handlebars.registerBoundHelper(options.translate, translate);
-  Handlebars.registerBoundHelper(options.localize, localize);
+  Handlebars.registerBoundHelper(options.translate, translateHelper);
+  Handlebars.registerBoundHelper(options.localize, localizeHelper);
 }
 
 /**
@@ -78,7 +102,6 @@ function getTranslations(){
   return I18n.translations;
 }
 
-
 exports.setDefaultLocale = setDefaultLocale;
 exports.setLocale = setLocale;
 exports.setFallbacks = setFallbacks;
@@ -87,9 +110,13 @@ exports.getLocale = getLocale;
 exports.getFallbacks = getFallbacks;
 exports.getTranslations = getTranslations;
 exports.registerHelpers = registerHelpers;
+exports.translateHelper = translateHelper;
+exports.localizeHelper = localizeHelper;
 exports.translate = translate;
+exports.t = t;
 exports.localize = localize;
-},{"./i18n-js":2,"./localize":3,"./translate":4}],2:[function(_dereq_,module,exports){
+exports.l = l;
+},{"./i18n-js":2,"./localize-helper":3,"./translate-helper":4}],2:[function(_dereq_,module,exports){
 "use strict";
 var I18n = {};
 
