@@ -1,6 +1,10 @@
 "use strict";
-var I18n = {};
+/**
+ * Small customization of https://github.com/fnando/i18n-js, a simple I18n library for
+ * internalizalization un javascript using Rails' I18n conventions.
+ */
 
+var I18n = {};
 
 // Just cache the Array#slice function.
 var slice = Array.prototype.slice;
